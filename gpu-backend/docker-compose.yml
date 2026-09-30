@@ -1,0 +1,24 @@
+services:
+  hunyuan:
+    build:
+      context: ..
+      dockerfile: gpu-backend/Dockerfile
+    image: hunyuan3d-gpu-backend:latest
+    ports:
+      - "8000:8000"
+    gpus: all
+    environment:
+      HOST: "0.0.0.0"
+      PORT: "8000"
+      HUNYUAN_MODEL_PATH: /app/Hunyuan3D-2
+      HUNYUAN_OUTPUT_DIR: /app/generated
+      HUNYUAN_PUBLIC_BASE_URL: ${HUNYUAN_PUBLIC_BASE_URL:-http://localhost:8000}
+      HF_HOME: /root/.cache/huggingface
+    volumes:
+      - hunyuan-output:/app/generated
+      - huggingface-cache:/root/.cache/huggingface
+    restart: unless-stopped
+
+volumes:
+  hunyuan-output:
+  huggingface-cache:

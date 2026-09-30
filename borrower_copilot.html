@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Borrower Copilot - Architecture, Domain Logic & Evaluation Defense</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 16mm 18mm 16mm;
+
+      @bottom-right {
+        content: counter(page);
+        font-size: 9pt;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        color: #64748b;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #0f172a;
+      line-height: 1.45;
+      font-size: 10pt;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header-container {
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .title-area h1 {
+      font-size: 20pt;
+      font-weight: 800;
+      margin: 0 0 4px 0;
+      letter-spacing: -0.5px;
+      color: #0f172a;
+    }
+
+    .title-area p {
+      margin: 0;
+      font-size: 10pt;
+      color: #475569;
+      font-weight: 500;
+    }
+
+    .badge-tag {
+      background-color: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 8pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #334155;
+    }
+
+    h2 {
+      font-size: 12pt;
+      font-weight: 700;
+      margin: 18px 0 8px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #1e293b;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 4px;
+    }
+
+    h3 {
+      font-size: 10.5pt;
+      font-weight: 700;
+      margin: 10px 0 4px 0;
+      color: #0f172a;
+    }
+
+    p {
+      margin: 0 0 8px 0;
+      color: #334155;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0 14px 0;
+      font-size: 8.5pt;
+    }
+
+    th,
+    td {
+      border: 1px solid #cbd5e1;
+      padding: 6px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background-color: #f8fafc;
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    .code-block {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+      font-size: 8pt;
+      color: #0f172a;
+      margin: 6px 0 10px 0;
+    }
+
+    .profile-box {
+      border: 1px solid #e2e8f0;
+      background-color: #ffffff;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      page-break-inside: avoid;
+    }
+
+    .profile-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .profile-header strong {
+      font-size: 10pt;
+      color: #0f172a;
+    }
+
+    .verdict-tag {
+      font-size: 7.5pt;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 3px;
+      text-transform: uppercase;
+    }
+
+    .verdict-borrow {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+    }
+
+    .verdict-less {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+
+    .verdict-dont {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    ul {
+      margin: 0 0 8px 0;
+      padding-left: 18px;
+    }
+
+    li {
+      margin-bottom: 3px;
+      color: #334155;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div class="header-container">
+    <div class="title-area">
+      <h1>Borrower Copilot</h1>
+      <p>System Architecture, Financial Domain Logic & Interview Defense Guide</p>
+    </div>
+    <div>
+      <span class="badge-tag">Lokta Build Challenge</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: EXECUTIVE SUMMARY -->
+  <h2>1. Problem Gap & Core Architecture</h2>
+  <p>
+    Lenders maintain institutional risk models (FOIR caps, risk-based rate matrices) designed exclusively to optimize
+    bank profitability. The Indian retail borrower arrives without an objective reference point, frequently overpaying
+    by 300–400 bps or committing to unsustainable EMIs[cite: 1]. <strong>Borrower Copilot</strong> reverses this dynamic
+    by acting as an uncompromised borrower-side advisory engine[cite: 1].
+  </p>
+  <p>
+    <strong>Architecture Paradigm:</strong> A decoupled MERN pattern with zero-persistence, client-side resilience, and
+    deterministic rules execution[cite: 1].
+  </p>
+  <ul>
+    <li><strong>Client (React + Vite + Tailwind):</strong> Mobile-first negotiation viewport designed to function as an
+      in-branch negotiation asset on a smartphone[cite: 1].</li>
+    <li><strong>Credit Engine (TypeScript / Express):</strong> Pure functional domain modules with zero external bureau
+      dependencies[cite: 1]. Runs calculations deterministically in milliseconds[cite: 1].</li>
+    <li><strong>Local Fallback Architecture:</strong> Defaults to in-memory JSON fixtures, guaranteeing evaluation runs
+      from README in under 5 minutes without mandatory MongoDB service setup[cite: 1].</li>
+  </ul>
+
+  <!-- SECTION 2: THE 4 CORE OUTPUTS -->
+  <h2>2. The 4 Evaluated Outputs (Design & Rules)</h2>
+
+  <h3>Output 01: The Verdict Engine</h3>
+  <p>Determines whether borrowing is structurally sound[cite: 1]. "Don't Borrow" is a mandatory circuit breaker[cite:
+    1]:</p>
+  <ul>
+    <li><strong>Don't Borrow:</strong> Fires if borrower has &ge;1 bounced EMI in the last 12 months combined with
+      active high-interest app loans (>30%), or if existing FOIR already exceeds 60% of income[cite: 1]. Prevents
+      predatory debt compounding[cite: 1].</li>
+    <li><strong>Borrow Less:</strong> Fires when a requested loan is for depreciating/lifestyle consumption (e.g.,
+      weddings) and the requested amount severely drains monthly emergency buffers[cite: 1].</li>
+    <li><strong>Borrow:</strong> Fires when the loan is productive (business expansion or income asset) and total
+      obligations remain &le;40% FOIR[cite: 1].</li>
+  </ul>
+
+  <h3>Output 02: Dual Capacity Engine (Sanction vs. Safe)</h3>
+  <p>Distinguishes what institutional banks will approve from what a household budget can safely sustain[cite: 1]:</p>
+  <ul>
+    <li><strong>Lender Sanction:</strong> Computed via traditional banking FOIR:
+      <div class="code-block">Allowed EMI = (Net Monthly Income &times; Standard FOIR) - Existing EMIs</div>
+      Salaried FOIR is capped at 50%[cite: 1]. Self-employed unsecured FOIR is capped strictly at 40% of verifiable ITR
+      income (ignoring cash)[cite: 1].
+    </li>
+    <li><strong>Safe Capacity:</strong> Computed via residual household cashflow after a 40% discretionary safety
+      reserve:
+      <div class="code-block">Safe Surplus = Net Income + (Spouse Income &times; 0.7) - Living Costs - Existing
+        EMIs<br>Safe EMI Ceiling = Safe Surplus &times; 0.60</div>
+      Safe capacity is the Present Value (PV) of this safe EMI, ensuring the borrower is protected against unexpected
+      shocks[cite: 1].
+    </li>
+  </ul>
+
+  <h3>Output 03: Fair Interest Rate & RBI All-In APR Band</h3>
+  <p>Expressed as an honest risk-spread band rather than an arbitrary single point[cite: 1]:</p>
+  <ul>
+    <li><strong>Base Anchor:</strong> 6.50% RBI Repo floor. Risk premiums are systematically stacked based on employment
+      tier, collateral backing, and CIBIL score[cite: 1].</li>
+    <li><strong>Unknown Score Rule:</strong> If credit score is unknown, the model widens the rate spread by
+      &plusmn;1.75% rather than defaulting to subprime 300, explicitly warning the borrower of unverified pricing
+      uncertainty[cite: 1].</li>
+    <li><strong>All-In APR Transparency:</strong> Mandates inclusion of upfront processing fees (1.5%–2.5%) plus 18% GST
+      over loan tenure, exposing hidden origination costs[cite: 1].</li>
+  </ul>
+
+  <h3>Output 04: Max Safe EMI & Stress Testing</h3>
+  <p>Provides a non-negotiable monthly outflow ceiling alongside two real-world stress simulations[cite: 1]:</p>
+  <ul>
+    <li><strong>Rate Shock (+200 bps):</strong> Models the cashflow impact if floating benchmark rates jump by
+      +2.0%[cite: 1].</li>
+    <li><strong>Income Shock (-20%):</strong> Assesses whether the household budget plunges into negative cashflow
+      during a 20% earnings contraction[cite: 1].</li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 3: RULES TABLE -->
+  <h2>3. Complete Engine Logic & Thresholds (RULES.md)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 28%;">Parameter / Rule</th>
+        <th style="width: 22%;">Value / Threshold</th>
+        <th style="width: 30%;">Why It Exists</th>
+        <th style="width: 20%;">Basis / Source</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Salaried Max FOIR (Tier-1)</strong></td>
+        <td>50% of Net Monthly Income</td>
+        <td>Maximum institutional debt tolerance for prime corporate earners before default risk escalates.</td>
+        <td>Bank Underwriting Norms (HDFC/ICICI)[cite: 1]</td>
+      </tr>
+      <tr>
+        <td><strong>Self-Employed Unsecured FOIR</strong></td>
+        <td>40% of (Reported ITR / 12)</td>
+        <td>Lenders heavily discount unverified cash; assess capacity solely against taxable documentation.</td>
+        <td>NBFC Lending Standards[cite: 1]</td>
+      </tr>
+      <tr>
+        <td><strong>LAP Collateral LTV Cap</strong></td>
+        <td>50% of Property Market Value</td>
+        <td>Prudent liquidation haircut applied to unencumbered commercial shop premises.</td>
+        <td>RBI Master Direction on LAP[cite: 1]</td>
+      </tr>
+      <tr>
+        <td><strong>Distress Circuit Breaker</strong></td>
+        <td>&ge;1 bounce in 12m AND &ge;1 app loan (&gt;30%)</td>
+        <td>Prevents fresh borrowing when debt is already being rolled over to service past defaults.</td>
+        <td>Responsible Lending / Domain Judgement[cite: 1]</td>
+      </tr>
+      <tr>
+        <td><strong>Unknown CIBIL Penalty</strong></td>
+        <td>Spread widened by &plusmn;1.75%</td>
+        <td>Enforces Rule 2 ("confidence widens with silence"); avoids false precision without bureau data[cite: 1].
+        </td>
+        <td>Challenge Brief Rule 2[cite: 1]</td>
+      </tr>
+      <tr>
+        <td><strong>Emergency Buffer Reserve</strong></td>
+        <td>40% of Disposable Surplus</td>
+        <td>Ensures household does not commit 100% of residual cash to debt servicing.</td>
+        <td>Personal Finance Underwriting</td>
+      </tr>
+      <tr>
+        <td><strong>All-In Fee Inclusions</strong></td>
+        <td>Processing Fee (2.0%) + 18% GST</td>
+        <td>Mandatory disclosure of true annualized cost of credit including origination friction.</td>
+        <td>RBI Digital Lending Directions[cite: 1]</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 4: THE THREE BENCHMARK BORROWERS -->
+  <h2>4. Defense of the Three Test Archetypes</h2>
+
+  <!-- Priya -->
+  <div class="profile-box">
+    <div class="profile-header">
+      <strong>Priya (29, Bengaluru) — MNC Software Engineer</strong>
+      <span class="verdict-tag verdict-less">Verdict: Borrow Less</span>
+    </div>
+    <p><em>Profile:</em> Net ₹1,10,000/mo. Rent: ₹28,000. Car EMI: ₹14,000. CIBIL: 780. Wants ₹18L personal loan for
+      wedding[cite: 1].</p>
+    <ul>
+      <li><strong>Sanction vs Safe Divergence:</strong> Lenders sanction ~₹16.5L–18L based purely on 50% FOIR
+        limits[cite: 1]. However, taking ₹18L adds an EMI of ~₹39,000, which reduces her monthly savings buffer to
+        nearly zero[cite: 1].</li>
+      <li><strong>Copilot Output:</strong> Recommends a safe capacity ceiling of ₹10L–12L[cite: 1].</li>
+      <li><strong>Negotiation Card Defense:</strong> Prime CIBIL (780) and MNC tier entitle her to 10.5%–11.5%[cite: 1].
+        If a branch quotes 14%, she counters with her prime bureau standing and limits borrowing to safe reserves[cite:
+        1].</li>
+    </ul>
+  </div>
+
+  <!-- Ravi -->
+  <div class="profile-box">
+    <div class="profile-header">
+      <strong>Ravi (42, Mysuru) — Kirana Store Owner</strong>
+      <span class="verdict-tag verdict-borrow">Verdict: Borrow (Route to LAP)</span>
+    </div>
+    <p><em>Profile:</em> Cash: ₹40k–80k/mo. ITR: ₹4.2L/yr (₹35k/mo). No credit history. Owns shop worth ₹45L. Wants ₹15L
+      for expansion[cite: 1].</p>
+    <ul>
+      <li><strong>Product Rerouting:</strong> Applying for an unsecured business loan results in rejection or a tiny
+        sanction (~₹5.2L) at 16%+ because banks only evaluate his ₹4.2L ITR[cite: 1].</li>
+      <li><strong>Copilot Output:</strong> Pivots Ravi to a Loan Against Property (LAP) backed by his ₹45L shop,
+        unlocking up to ₹22.5L capacity at 9.5%–10.5% over a 10-year repayment structure[cite: 1].</li>
+      <li><strong>Negotiation Card Defense:</strong> Advises Ravi to refuse unsecured loans and propose LAP directly
+        using his commercial premises as collateral[cite: 1].</li>
+    </ul>
+  </div>
+
+  <!-- Anita -->
+  <div class="profile-box">
+    <div class="profile-header">
+      <strong>Anita (35, Hubballi) — Gig Delivery & Tailor</strong>
+      <span class="verdict-tag verdict-dont">Verdict: Don't Borrow</span>
+    </div>
+    <p><em>Profile:</em> Net: ₹26k–30k/mo. Husband unemployed. 3 app loans totaling ₹35,000 at 30%+, 1 bounced EMI.
+      Wants ₹1.5L for EV[cite: 1].</p>
+    <ul>
+      <li><strong>Circuit Breaker Trigger:</strong> Anita is trapped in high-interest rollover debt[cite: 1]. Adding
+        ₹1.5L of debt with an unstable single-earner income creates severe risk of total insolvency[cite: 1].</li>
+      <li><strong>Copilot Output:</strong> Declares an unequivocal "Don't Borrow"[cite: 1]. Safe new borrowing capacity
+        is ₹0[cite: 1].</li>
+      <li><strong>Negotiation Card Defense:</strong> Recommends prioritizing the closure of 30%+ app loans before taking
+        fresh debt, or exploring zero-down EV fleet leasing programs instead of personal micro-loans[cite: 1].</li>
+    </ul>
+  </div>
+
+  <!-- SECTION 5: INTERVIEW DEFENSE STRATEGY -->
+  <h2>5. Live Interview Defense & Live Modification Strategy</h2>
+  <p>
+    During the live technical evaluation, assessors will ask you to justify trade-offs and modify credit assumptions
+    live[cite: 1]:
+  </p>
+  <ul>
+    <li><strong>Explainability Anchor:</strong> Every single number rendered on the UI traces back to a clean
+      mathematical formula and a verifiable rule entry in <code>RULES.md</code>[cite: 1]. No black-box machine learning
+      models or arbitrary heuristics[cite: 1].</li>
+    <li><strong>Changing Rules Live:</strong> Because all logic is isolated inside pure functions in
+      <code>src/engine/rulesEngine.ts</code>, you can alter FOIR percentages, repo rate baselines, or risk spreads in
+      real time during the call and demonstrate immediate UI reactivity[cite: 1].</li>
+    <li><strong>Honesty About Boundaries:</strong> If asked about balance sheet analysis, clearly articulate that the
+      copilot relies on self-reported inputs and explicit uncertainty widening, avoiding false precision[cite: 1].</li>
+  </ul>
+
+</body>
+
+</html>
